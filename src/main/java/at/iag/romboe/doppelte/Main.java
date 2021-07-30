@@ -8,6 +8,7 @@ public class Main {
 		try {
 			if (args.length != 2) {
 				System.err.println("Usage: java -jar doppelte.jar [source-directory] [backup-directory]");
+				System.exit(1);
 			}
 			Processor p = new Processor(args[0], args[1]);
 			p.go();
