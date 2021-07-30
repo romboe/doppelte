@@ -18,7 +18,7 @@ import org.apache.commons.io.FileUtils;
 
 public class Processor {
 
-	private static final int DEPTH = 10;
+	private static final int DEPTH = 20;
 	private static final String DIRECTORY_OF_DUPLICATES = "/doppelte";
 	private String sourceDir;
 	private String backupDir;
