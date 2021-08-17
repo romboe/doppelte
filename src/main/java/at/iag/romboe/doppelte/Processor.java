@@ -22,6 +22,7 @@ public class Processor {
 	private static final String DIRECTORY_OF_DUPLICATES = "/doppelte";
 	private String sourceDir;
 	private String backupDir;
+	private Path pathOfLastFind;
 
 	public Processor(String sourceDir, String backupDir) {
 		this.sourceDir = sourceDir;
@@ -35,7 +36,7 @@ public class Processor {
 		printFileNames(filePaths);
 
 		for (Path filePath:filePaths) {
-			if (fileExistsInBackupDirectory(filePath)) {
+			if (fileExistsInDirectory(filePath, pathOfLastFind) || fileExistsInBackupDirectory(filePath)) {
 				// move file
 				File file = filePath.toFile();
 				Path targetPath = Paths.get(file.getParent(), DIRECTORY_OF_DUPLICATES, file.getName());
@@ -56,7 +57,14 @@ public class Processor {
 	}
 
 	private boolean fileExistsInBackupDirectory(Path fileToLookFor) throws IOException {
-		try (Stream<Path> stream = Files.walk(Paths.get(backupDir), DEPTH)) {
+		return fileExistsInDirectory(fileToLookFor, Paths.get(backupDir));
+	}
+
+	private boolean fileExistsInDirectory(Path fileToLookFor, Path directory) throws IOException {
+		if (null == directory) {
+			return false;
+		}
+		try (Stream<Path> stream = Files.walk(directory, DEPTH)) {
 			Optional<Path> result = stream
 				.filter(file -> !Files.isDirectory(file))
 				.filter(file -> {
@@ -73,6 +81,9 @@ public class Processor {
 					}
 				})
 				.findFirst();
+			if (result.isPresent()) {
+				this.pathOfLastFind = result.get().getParent();
+			}
 			return result.isPresent();
 		}
 	}
