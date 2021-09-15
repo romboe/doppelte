@@ -42,7 +42,8 @@ jobs:
       - name: Make directory staging and copy all jars in there
         run: mkdir staging && cp target/*.jar staging
       
-      - name: Upload all files to folder 'Package'
+      # The zip file can be found if you click the completed Action in the section Artifacts
+      - name: Save all files in a zip File named 'Package'
         uses: actions/upload-artifact@v2
         with:
           name: Package
