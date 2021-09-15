@@ -37,13 +37,13 @@ jobs:
           architecture: x64
           
       - name: Build with Maven
-      - run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots verify
       
       - name: Make directory staging and copy all jars in there
-      - run: mkdir staging && cp target/*.jar staging
+        run: mkdir staging && cp target/*.jar staging
       
       - name: Upload all files to folder 'Package'
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: Package
           path: staging
