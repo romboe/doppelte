@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,7 +32,7 @@ public class Processor {
 	public void go() throws IOException {
 		createDirectoyOfDuplicates();
 
-		Set<Path> filePaths = getFilePathsFromDirectory(sourceDir);
+		List<Path> filePaths = getFilePathsFromDirectory(sourceDir);
 		printFileNames(filePaths);
 
 		for (Path filePath:filePaths) {
@@ -45,14 +45,16 @@ public class Processor {
 		}
 	}
 
-	public Set<Path> getFilePathsFromDirectory(String dir) throws IOException {
+	public List<Path> getFilePathsFromDirectory(String dir) throws IOException {
 		try (Stream<Path> stream = Files.list(Paths.get(dir))) {
 			return stream
-				.filter(file -> !isDirectory(file)).collect(Collectors.toSet());
+				.filter(file -> !isDirectory(file))
+				.sorted()
+				.collect(Collectors.toList());
 		}
 	}
 
-	private void printFileNames(Set<Path> files) {
+	private void printFileNames(List<Path> files) {
 		files.stream().map(Path::getFileName).map(Path::toString).forEach(s -> System.out.println(s));
 	}
 
