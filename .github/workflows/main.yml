@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'zulu'
           architecture: x64
           
       - name: Build with Maven
